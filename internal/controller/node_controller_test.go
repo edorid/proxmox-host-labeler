@@ -27,27 +27,27 @@ func (a apiStub) ListVMs(context.Context) ([]proxmox.VM, error) {
 
 func TestReconcileUpdatesPlacementAndRetainsUnconfirmedValue(t *testing.T) {
 	tests := []struct {
-		name string
-		api apiStub
+		name        string
+		api         apiStub
 		initialHost string
-		wantHost string
+		wantHost    string
 	}{
 		{
-			name: "updates label on confirmed placement",
-			api: apiStub{vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}}},
+			name:     "updates label on confirmed placement",
+			api:      apiStub{vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}}},
 			wantHost: "pve-2",
 		},
 		{
-			name: "retains label when placement is unconfirmed",
-			api: apiStub{vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.99"}, GuestIPAvailable: true}}},
+			name:        "retains label when placement is unconfirmed",
+			api:         apiStub{vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.99"}, GuestIPAvailable: true}}},
 			initialHost: "pve-1",
-			wantHost: "pve-1",
+			wantHost:    "pve-1",
 		},
 		{
-			name: "retains label during Proxmox failure",
-			api: apiStub{err: errors.New("unavailable")},
+			name:        "retains label during Proxmox failure",
+			api:         apiStub{err: errors.New("unavailable")},
 			initialHost: "pve-1",
-			wantHost: "pve-1",
+			wantHost:    "pve-1",
 		},
 	}
 
@@ -63,8 +63,8 @@ func TestReconcileUpdatesPlacementAndRetainsUnconfirmedValue(t *testing.T) {
 			}
 			kubeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(node).Build()
 			reconciler := &NodeReconciler{
-				Client: kubeClient,
-				API: tt.api,
+				Client:   kubeClient,
+				API:      tt.api,
 				LabelKey: "edorid.github.io/proxmox-host",
 				Recorder: record.NewFakeRecorder(10),
 			}

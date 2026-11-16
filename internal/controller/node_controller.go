@@ -21,7 +21,7 @@ const reconcileInterval = 5 * time.Minute
 
 type NodeReconciler struct {
 	client.Client
-	API proxmox.API
+	API      proxmox.API
 	LabelKey string
 	Recorder record.EventRecorder
 }

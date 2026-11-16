@@ -17,21 +17,21 @@ func TestMatchNode(t *testing.T) {
 		wantReason string
 	}{
 		{
-			name: "matches exact name cluster tag and guest IP",
-			node: testNode("worker-1", "blue", "10.0.0.12"),
-			vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.12"}, GuestIPAvailable: true}},
+			name:      "matches exact name cluster tag and guest IP",
+			node:      testNode("worker-1", "blue", "10.0.0.12"),
+			vms:       []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.12"}, GuestIPAvailable: true}},
 			wantMatch: true,
 		},
 		{
-			name: "permits unavailable guest IP data",
-			node: testNode("worker-1", "blue", "10.0.0.12"),
-			vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}},
+			name:      "permits unavailable guest IP data",
+			node:      testNode("worker-1", "blue", "10.0.0.12"),
+			vms:       []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}},
 			wantMatch: true,
 		},
 		{
-			name: "rejects confirmed IP mismatch",
-			node: testNode("worker-1", "blue", "10.0.0.12"),
-			vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.99"}, GuestIPAvailable: true}},
+			name:       "rejects confirmed IP mismatch",
+			node:       testNode("worker-1", "blue", "10.0.0.12"),
+			vms:        []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}, GuestIPs: []string{"10.0.0.99"}, GuestIPAvailable: true}},
 			wantReason: "Node InternalIP does not match Proxmox guest-agent IPs",
 		},
 		{
@@ -44,15 +44,15 @@ func TestMatchNode(t *testing.T) {
 			wantReason: "multiple VMs matched Node name and Rancher cluster tag",
 		},
 		{
-			name: "rejects absent required cluster tag",
-			node: testNode("worker-1", "blue", "10.0.0.12"),
-			vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"other"}}},
+			name:       "rejects absent required cluster tag",
+			node:       testNode("worker-1", "blue", "10.0.0.12"),
+			vms:        []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"other"}}},
 			wantReason: "no VM matched Node name and Rancher cluster tag",
 		},
 		{
-			name: "rejects missing Node InternalIP",
-			node: testNode("worker-1", "blue", ""),
-			vms: []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}},
+			name:       "rejects missing Node InternalIP",
+			node:       testNode("worker-1", "blue", ""),
+			vms:        []proxmox.VM{{Name: "worker-1", Node: "pve-2", Tags: []string{"rancher-cluster-blue"}}},
 			wantReason: "Node has no InternalIP",
 		},
 		{

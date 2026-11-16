@@ -3,8 +3,8 @@ package controller
 import (
 	"net"
 
-	corev1 "k8s.io/api/core/v1"
 	"github.com/edorid/proxmox-host-labeler/internal/proxmox"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const clusterNameKey = "cluster.x-k8s.io/cluster-name"

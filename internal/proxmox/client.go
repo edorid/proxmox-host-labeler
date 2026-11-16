@@ -13,11 +13,11 @@ import (
 )
 
 type VM struct {
-	ID       int
-	Name     string
-	Node     string
-	Tags     []string
-	GuestIPs []string
+	ID               int
+	Name             string
+	Node             string
+	Tags             []string
+	GuestIPs         []string
 	GuestIPAvailable bool
 }
 
@@ -26,13 +26,13 @@ type API interface {
 }
 
 type Client struct {
-	baseURL string
-	tokenID string
+	baseURL     string
+	tokenID     string
 	tokenSecret string
-	httpClient *http.Client
-	cacheMu sync.Mutex
-	cachedVMs []VM
-	cacheUntil time.Time
+	httpClient  *http.Client
+	cacheMu     sync.Mutex
+	cachedVMs   []VM
+	cacheUntil  time.Time
 }
 
 func NewClient(baseURL, tokenID, tokenSecret string, httpClient *http.Client) *Client {
@@ -40,10 +40,10 @@ func NewClient(baseURL, tokenID, tokenSecret string, httpClient *http.Client) *C
 }
 
 type resource struct {
-	Type string `json:"type"`
-	VMID int `json:"vmid"`
-	Name string `json:"name"`
-	Node string `json:"node"`
+	Type   string `json:"type"`
+	VMID   int    `json:"vmid"`
+	Name   string `json:"name"`
+	Node   string `json:"node"`
 	Status string `json:"status"`
 }
 
@@ -54,9 +54,9 @@ type vmConfig struct {
 
 type agentResult struct {
 	Result []struct {
-		Name string `json:"name"`
+		Name        string `json:"name"`
 		IPAddresses []struct {
-			IP string `json:"ip-address"`
+			IP   string `json:"ip-address"`
 			Type string `json:"ip-address-type"`
 		} `json:"ip-addresses"`
 	} `json:"result"`

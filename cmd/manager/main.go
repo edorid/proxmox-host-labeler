@@ -40,8 +40,8 @@ func main() {
 	transport.TLSClientConfig = &tls.Config{MinVersion: tls.VersionTLS12, InsecureSkipVerify: insecureTLS} // #nosec G402 -- explicitly opt-in for self-signed Proxmox certificates.
 	api := proxmox.NewClient(proxmoxURL, tokenID, tokenSecret, &http.Client{Transport: transport, Timeout: 30 * time.Second})
 	reconciler := &controller.NodeReconciler{
-		Client: mgr.GetClient(),
-		API: api,
+		Client:   mgr.GetClient(),
+		API:      api,
 		LabelKey: labelKey,
 		Recorder: mgr.GetEventRecorderFor("proxmox-host-labeler"),
 	}

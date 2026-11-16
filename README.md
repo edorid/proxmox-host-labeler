@@ -63,7 +63,7 @@ Kubernetes uses the Node label for future scheduling decisions; changing a Node'
 
 ## Development
 
-Requires Go 1.23+ and Docker for image builds.
+Requires Go 1.23+ and Docker for image builds. The repository pins the Go toolchain line in `mise.toml`.
 
 ```sh
 make test
