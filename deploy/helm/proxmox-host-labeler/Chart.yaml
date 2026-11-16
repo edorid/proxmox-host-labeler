@@ -1,0 +1,6 @@
+apiVersion: v2
+name: proxmox-host-labeler
+description: Labels Kubernetes Nodes with their physical Proxmox host placement.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

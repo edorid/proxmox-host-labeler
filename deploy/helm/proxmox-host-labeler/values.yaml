@@ -1,0 +1,15 @@
+image:
+  repository: ghcr.io/edorid/proxmox-host-labeler
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+proxmox:
+  url: ""
+  tokenSecretName: proxmox-host-labeler
+  tokenIDKey: token-id
+  tokenSecretKey: token-secret
+  insecureTLS: false
+
+hostLabelKey: edorid.github.io/proxmox-host
+
+resources: {}

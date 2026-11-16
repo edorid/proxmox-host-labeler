@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "proxmox-host-labeler.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "proxmox-host-labeler.name" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "proxmox-host-labeler.name" . }}
+    spec:
+      serviceAccountName: {{ include "proxmox-host-labeler.fullname" . }}
+      containers:
+        - name: manager
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PROXMOX_URL
+              value: {{ required "proxmox.url is required" .Values.proxmox.url | quote }}
+            - name: PROXMOX_TOKEN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.proxmox.tokenSecretName }}
+                  key: {{ .Values.proxmox.tokenIDKey }}
+            - name: PROXMOX_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.proxmox.tokenSecretName }}
+                  key: {{ .Values.proxmox.tokenSecretKey }}
+            - name: PROXMOX_INSECURE_TLS
+              value: {{ .Values.proxmox.insecureTLS | quote }}
+            - name: HOST_LABEL_KEY
+              value: {{ .Values.hostLabelKey | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
